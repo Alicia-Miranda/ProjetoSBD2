@@ -97,8 +97,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     <td>${fornecedor.telefone}</td>
                     <td>${fornecedor.tipoProduto}</td>
                     <td>
-                        <button class="editar" data-index="${fornecedor.id}">Editar</button>
-                        <button class="excluir" data-index="${fornecedor.id}">Excluir</button>
+                        <button class="editar" data-index="${fornecedor.id}">✍</button>
+                        <button class="excluir" data-index="${fornecedor.id}">🚮</button>
                     </td>
                 `;
                 tabela.appendChild(tr);

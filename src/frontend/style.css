@@ -34,10 +34,12 @@ body::before {
 h1 {
     position: relative;
     z-index: 2;
-    color: #fff;
+    color: #ecf0f1;
     font-size: 2rem;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     text-align: center;
+    font-weight: 600;
+    text-transform: uppercase;
 }
 
 /* Container principal */
@@ -45,10 +47,10 @@ h1 {
     position: relative;
     z-index: 2;
     background-color: rgba(255, 255, 255, 0.9);
-    padding: 30px 40px;
-    border-radius: 10px;
+    padding: 30px 20px;
+    border-radius: 20px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    max-width: 500px;
+    max-width: 1000px;
     width: 100%;
 }
 
@@ -56,6 +58,7 @@ h1 {
 .form {
     display: flex;
     flex-direction: column;
+    
 }
 
 /* Estilo dos labels */
@@ -70,12 +73,13 @@ h1 {
 .form input[type="email"],
 .form input[type="number"] {
     margin-top: 5px;
-    padding: 10px;  
+    padding: 15px;  
     font-size: 1rem;
     border: 1px solid #5e5555;
     border-radius: 5px;
     outline: none;
     transition: border-color 0.3s;
+    
 }
 
 /* Foco nos inputs */
@@ -83,6 +87,7 @@ h1 {
 .form input[type="email"]:focus,
 .form input[type="number"]:focus {
     border-color: #000000;
+    background-color: #eaf7f7;
 }
 
 /* Estilo do botão */
@@ -91,7 +96,7 @@ h1 {
     padding: 10px;
     font-size: 1rem;
     color: #fff;
-    background-color: #23adec;
+    background-color: #19cbe2;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -112,14 +117,14 @@ h1 {
 }
 
 .tabela-fornecedores th, .tabela-fornecedores td {
-    padding: 10px;
+    padding: 20px;
     text-align: left;
     border: 1px solid #ddd;
     color: #333;
 }
 
 .tabela-fornecedores th {
-    background-color: #c0bcbc;
+    background-color: #19cbe2;
     color: #ffffff;
 }
 
@@ -137,7 +142,7 @@ h1 {
     margin: 20px auto;
     padding: 10px 20px;
     font-size: 1rem;
-    background-color: #23adec;
+    background-color: #19cbe2;
     color: #fff;
     border: none;
     border-radius: 5px;
