@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Fornecedores</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1 id="titulo">Cadastro de Fornecedores</h1>
+    <div class="conteiner" id="formulario-container"> 
+        <form class="form" id="fornecedorForm">
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" required>
+            
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            
+            <label for="telefone">Telefone:</label>
+            <input type="number" id="telefone" name="telefone" required>
+            
+            <label for="tipoProduto">Tipo de Produto:</label>
+            <input type="text" id="tipoProduto" name="tipoProduto" required>
+
+            <button type="submit" id="btnSalvar">Salvar</button>
+            <button type="button" id="visualizarFornecedores">Visualizar Fornecedores</button>
+        </form>
+    </div>
+
+    <div class="conteiner" id="visualizacao-container" style="display: none;">
+        
+        <table class="tabela-fornecedores">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Telefone</th>
+                    <th>Tipo de Produto</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="fornecedores-lista"></tbody>
+        </table>
+        <button class="botao-voltar" id="voltarCadastro">Voltar ao Cadastro</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
