@@ -102,6 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 products = [];
                 document.getElementById('textTitle').innerHTML = "Editar de Fornecedor"
             } else {
+                editingFornecedorId = null;
                 const error = await response.json();
                 alert(`Erro: ${error.error}`);
             }
@@ -158,8 +159,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('telefone').value = fornecedor.telefone;
                 // Adicionar produtos ao formulário de edição
                 document.querySelector('#productList').innerHTML = '';
-                products = fornecedor.estoque?.produtos || [];
-                products.forEach(produto => {
+                const productsPayload = fornecedor.estoque?.produtos || [];
+                productsPayload.forEach(produto => {
                     const produtoHtml = `
                         <li id="produto-${produto._id}">
                             ${produto.nome} - ${produto.marca}
