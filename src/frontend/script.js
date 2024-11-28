@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const fornecedores = await response.json();
 
             fornecedoresLista.innerHTML = '';
-            fornecedores.forEach((fornecedor) => {
+            fornecedores?.forEach((fornecedor) => {
                 const row = document.createElement('tr');
                 row.id = `fornecedor-${fornecedor.id}`
                 row.innerHTML = `
