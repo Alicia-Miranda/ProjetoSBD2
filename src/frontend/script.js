@@ -1,157 +1,201 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const titulo = document.getElementById("titulo");
-    const formContainer = document.getElementById("formulario-container");
-    const viewContainer = document.getElementById("visualizacao-container");
-    const form = document.getElementById("fornecedorForm");
-    const tabela = document.getElementById("fornecedores-lista");
-    const btnVisualizar = document.getElementById("visualizarFornecedores");
-    const btnVoltar = document.getElementById("voltarCadastro");
-    const btnSalvar = document.getElementById("btnSalvar");
+document.addEventListener('DOMContentLoaded', () => {
+    const fornecedorForm = document.getElementById('fornecedorForm');
+    const visualizarBtn = document.getElementById('visualizarFornecedores');
+    const voltarBtn = document.getElementById('voltarCadastro');
+    const visualizarContainer = document.getElementById('visualizacao-container');
+    const productModal = document.getElementById('productModal');
+    const closeModalBtn = document.querySelector('.close');
+    const addProductBtn = document.getElementById('addProductBtn');
+    const saveProductBtn = document.getElementById('saveProductBtn');
+    const productForm = document.getElementById('productForm');
+    const productList = document.getElementById('productList');
+    const fornecedoresLista = document.getElementById('fornecedores-lista');
+    const formularioCadastro = document.getElementById('formulario-cadastro');
 
-    const serverUrl = "http://localhost:3333";
-    let fornecedores = [];
-    let editando = null;
+    let products = [];
+    let editingFornecedorId = null;
 
-    // Alternar para a tela de visualização
-    btnVisualizar.addEventListener("click", () => {
-        formContainer.style.display = "none";
-        viewContainer.style.display = "block";
-        titulo.textContent = "Lista de Fornecedores"; // Alterar título
-        atualizarTabela();
+    // Abrir e fechar modal de adicionar produto
+    addProductBtn.addEventListener('click', () => {
+        productModal.style.display = 'block';
     });
 
-    // Voltar ao formulário
-    btnVoltar.addEventListener("click", () => {
-        viewContainer.style.display = "none";
-        document.getElementById("email").disabled = false;
-        formContainer.style.display = "block";
-        titulo.textContent = "Cadastro de Fornecedores"; // Alterar título
+    closeModalBtn.addEventListener('click', () => {
+        productModal.style.display = 'none';
+        productForm.reset();
     });
 
-    // Salvar ou atualizar fornecedor
-    form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const nome = document.getElementById("nome").value;
-        const email = document.getElementById("email").value;
-        const telefone = document.getElementById("telefone").value;
-        const tipoProduto = document.getElementById("tipoProduto").value;
+    // Salvar produto
+    saveProductBtn.addEventListener('click', () => {
+        const produtoNome = document.getElementById('produtoNome').value;
+        const produtoMarca = document.getElementById('produtoMarca').value;
 
-        if (emailExiste(email) && editando === null) {
-            alert("O email já está cadastrado!");
-            return;
+        if (produtoNome && produtoMarca) {
+            products.push({ nome: produtoNome, marca: produtoMarca });
+            const listItem = document.createElement('li');
+            listItem.textContent = `${produtoNome} - ${produtoMarca}`;
+            productList.appendChild(listItem);
+            productModal.style.display = 'none';
+            productForm.reset();
         }
-
-        if (editando !== null) {
-           
-            btnSalvar.textContent = "Salvar";
+    });
+    
+    document.querySelector('#productList').addEventListener('click', async (e) => {
+        if (e.target.tagName === 'BUTTON') {
+            const produtoId = e.target.getAttribute('data-id');
             try {
-               await fetch(`${serverUrl}/fornecedores/${editando}`, {
+                const response = await fetch(`http://localhost:3333/produtos/${produtoId}`, {
+                    method: 'DELETE',
+                });
+        
+                if (!response.ok) {
+                    throw new Error('Erro ao remover produto');
+                }
+        
+                // Atualiza a interface após a remoção
+                document.getElementById(`produto-${produtoId}`).remove();
+                alert('Produto removido com sucesso!');
+            } catch (error) {
+                console.error(error);
+                alert('Erro ao remover o produto.');
+            }
+            e.stopPropagation(); // Previne a propagação do evento
+        }
+    });
+    // Salvar ou editar fornecedor
+    fornecedorForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const fornecedorData = {
+            nome: document.getElementById('nome').value,
+            email: document.getElementById('email').value,
+            telefone: document.getElementById('telefone').value,
+            produtos: products,
+        };
+        
+        try {
+            let response;
+            if (editingFornecedorId) {
+                // Edição de fornecedor
+                response = await fetch(`http://localhost:3333/fornecedores/${editingFornecedorId}`, {
                     method: 'PUT',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ nome, telefone, tipoProduto })
+                    body: JSON.stringify(fornecedorData),
                 });
-                alert("Fornecedor editado com sucesso! ✔");
-            } catch (error) {
-                alert('Erro ao editar fornecedor');
-            } finally{
-                editando = null;
-            }
-        } else {
-             try {
-                await fetch(`${serverUrl}/fornecedores`, {
+            } else {
+                // Cadastro de fornecedor
+                response = await fetch('http://localhost:3333/fornecedores', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ nome, email, telefone, tipoProduto })
+                    body: JSON.stringify(fornecedorData),
                 });
-                    alert("Fornecedor salvo com sucesso! ✔");
-             } catch (error) {
-                alert('Erro ao cadastrar fornecedor');
-             }
+            }
 
-        }
-        document.getElementById("email").disabled = false;
-        form.reset();
-        
+            if (response.ok) {
+                alert('Fornecedor salvo com sucesso!');
+                fornecedorForm.reset();
+                productList.innerHTML = '';
+                editingFornecedorId = null;
+                products = [];
+                document.getElementById('textTitle').innerHTML = "Editar de Fornecedor"
+            } else {
+                const error = await response.json();
+                alert(`Erro: ${error.error}`);
+            }
+        } catch (err) {
+            alert('Erro ao salvar fornecedor');
+        } 
     });
 
-    // Validar emails duplicados
-    const emailExiste = (email) => fornecedores.some((f) => f.email === email);
-
-    // Atualizar tabela
-    const atualizarTabela = async () => {
-        tabela.innerHTML = "";
-        //
+    // Visualizar fornecedores
+    visualizarBtn.addEventListener('click', async () => {
+        formularioCadastro.style.display = 'none'
+        document.getElementById('textTitle').innerHTML = "Cadastro de Fornecedores"
+        
         try {
-        const response = await fetch(`${serverUrl}/fornecedores`)
-        if (response.ok) {
-            fornecedores = await response.json()
+            const response = await fetch('http://localhost:3333/fornecedores');
+            const fornecedores = await response.json();
+
+            fornecedoresLista.innerHTML = '';
             fornecedores.forEach((fornecedor) => {
-                const tr = document.createElement("tr");
-                tr.innerHTML = `
+                const row = document.createElement('tr');
+                row.id = `fornecedor-${fornecedor.id}`
+                row.innerHTML = `
                     <td>${fornecedor.nome}</td>
                     <td>${fornecedor.email}</td>
                     <td>${fornecedor.telefone}</td>
-                    <td>${fornecedor.tipoProduto}</td>
+                    <td>${fornecedor.produtos?.map((p) => `${p.nome} - ${p.marca}`).join('<br>') || 'N/A'}</td>
                     <td>
-                        <button class="editar" data-index="${fornecedor.id}">✍</button>
-                        <button class="excluir" data-index="${fornecedor.id}">🚮</button>
+                        <button class="editar" data-id="${fornecedor.id}">Editar</button>
+                        <button class="deletar" data-id="${fornecedor.id}">Deletar</button>
                     </td>
                 `;
-                tabela.appendChild(tr);
+
+                fornecedoresLista.appendChild(row);
             });
-    
-        } 
-    } catch (error) {
-        console.error('Erro ao carregar fornecedores');
-    }
 
-        document.querySelectorAll(".editar").forEach((btn) =>
-            btn.addEventListener("click", (e) => {
-                const index = e.target.getAttribute("data-index");
-                editarFornecedor(index);
-            })
-        );
-
-        document.querySelectorAll(".excluir").forEach((btn) =>
-            btn.addEventListener("click", (e) => {
-                const index = e.target.getAttribute("data-index");
-                excluirFornecedor(index);
-            })
-        );
-    };
+            visualizarContainer.style.display = 'block';
+        } catch (error) {
+            alert('Erro ao listar fornecedores');
+        }
+    });
 
     // Editar fornecedor
-    const editarFornecedor = (fornecedorId) => {
-        const fornecedor = fornecedores.find(fornecedor => fornecedor.id === fornecedorId);
-        document.getElementById("nome").value = fornecedor.nome;
-        document.getElementById("email").value = fornecedor.email;
-        document.getElementById("email").disabled = true;
-        document.getElementById("telefone").value = fornecedor.telefone;
-        document.getElementById("tipoProduto").value = fornecedor.tipoProduto;
-
-        editando = fornecedorId;
-        btnSalvar.textContent = "Atualizar";
-        viewContainer.style.display = "none";
-        formContainer.style.display = "block";
-        titulo.textContent = "Cadastro de Fornecedores";
-    };
-
-    // Excluir fornecedor
-    const excluirFornecedor = async (fornecedorId) => {
-        if (confirm("Deseja excluir este fornecedor?")) {
+    fornecedoresLista.addEventListener('click', async (e) => {
+        if (e.target.classList.contains('editar')) {
+            const fornecedorId = e.target.dataset.id;
+            document.getElementById('textTitle').innerHTML = "Editar de Fornecedor"
             try {
-               await fetch(`${serverUrl}/fornecedores/${fornecedorId}`, { method: 'DELETE' })
-               alert('Fornecedor excluído!');
+                const response = await fetch(`http://localhost:3333/fornecedores/${fornecedorId}`);
+                const fornecedor = await response.json();
+                editingFornecedorId = fornecedorId;
+                // Preencher o formulário de edição com os dados do fornecedor
+                document.getElementById('nome').value = fornecedor.nome;
+                document.getElementById('email').value = fornecedor.email;
+                document.getElementById('telefone').value = fornecedor.telefone;
+                // Adicionar produtos ao formulário de edição
+                document.querySelector('#productList').innerHTML = '';
+                products = fornecedor.estoque?.produtos || [];
+                products.forEach(produto => {
+                    const produtoHtml = `
+                        <li id="produto-${produto._id}">
+                            ${produto.nome} - ${produto.marca}
+                            <button type="button" data-id=${produto._id}>Remover</button>
+                        </li>`;
+                    document.querySelector('#productList').innerHTML += produtoHtml;
+                });
+                formularioCadastro.style.display = 'block';
+                visualizarContainer.style.display = 'none';
             } catch (error) {
-                alert('Erro ao excluir fornecedor!');
-            } finally{
-                atualizarTabela();
+                alert('Erro ao carregar fornecedor para edição');
             }
-           
+        } else if(e.target.classList.contains('deletar')) {
+            const fornecedorId = e.target.dataset.id;
+                if (confirm("Deseja excluir este fornecedor?")) {
+                    try {
+                       await fetch(`http://localhost:3333/fornecedores/${fornecedorId}`, { method: 'DELETE' })
+                       alert('Fornecedor excluído!');
+                    } catch (error) {
+                        alert('Erro ao excluir fornecedor!');
+                    } finally{
+                        document.getElementById(`fornecedor-${fornecedorId}`).remove();
+                    }
+                   
+                }
         }
-    };
+    });
+
+    // Voltar ao cadastro
+    voltarBtn.addEventListener('click', () => {
+        document.getElementById('textTitle').innerHTML = "Cadastro de Fornecedores"
+        visualizarContainer.style.display = 'none';
+        formularioCadastro.style.display = 'block'
+        fornecedorForm.reset();
+        productList.innerHTML = '';
+        products = [];
+    });
+
 });

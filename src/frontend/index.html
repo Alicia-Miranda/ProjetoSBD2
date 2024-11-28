@@ -3,47 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Fornecedores</title>
+    <title>Cadastro</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1 id="titulo">Cadastro de Fornecedores</h1>
-    <div class="conteiner" id="formulario-container"> 
-        <form class="form" id="fornecedorForm">
-            <label for="nome">Nome:</label>
-            <input type="text" id="nome" name="nome" required>
-            
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-            
-            <label for="telefone">Telefone:</label>
-            <input type="number" id="telefone" name="telefone" required>
-            
-            <label for="tipoProduto">Tipo de Produto:</label>
-            <input type="text" id="tipoProduto" name="tipoProduto" required>
+    <div class="hud-background">
+        <header class="hud-header">
+            <h1 id="textTitle">Cadastro de Fornecedores</h1>
+        </header>
+        <main class="hud-main">
+            <!-- Formulário -->
+            <section class="hud-panel" id="formulario-cadastro">
+                <form id="fornecedorForm">
+                    <div class="form-group">
+                        <label for="nome">Nome:</label>
+                        <input type="text" id="nome" name="nome" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefone">Telefone:</label>
+                        <input type="text" id="telefone" name="telefone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="produtos">Produtos:</label>
+                        <button type="button" id="addProductBtn">Adicionar Produtos</button>
+                    </div>
+                    <ul id="productList"></ul>
+                    <div class="form-buttons">
+                        <button type="submit">Salvar</button>
+                        <button type="button" id="visualizarFornecedores">Lista de Fornecedores</button>
+                    </div>
+                </form>
+            </section>
 
-            <button type="submit" id="btnSalvar">Salvar</button>
-            <button type="button" id="visualizarFornecedores">Visualizar Fornecedores</button>
-        </form>
+            <!-- Modal de Produtos -->
+            <div id="productModal" class="modal" style="display: none;">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>Adicionar Produto</h2>
+                    <form id="productForm">
+                        <div class="form-group">
+                            <label for="produtoNome">Nome do Produto:</label>
+                            <input type="text" id="produtoNome" name="produtoNome" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="produtoMarca">Marca:</label>
+                            <input type="text" id="produtoMarca" name="produtoMarca" required>
+                        </div>
+                        <div class="form-buttons">
+                            <button type="button" id="saveProductBtn">Salvar Produto</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Visualização -->
+            <section class="hud-panel" id="visualizacao-container" style="display: none;">
+                <table id="tabela-fornecedores">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Telefone</th>
+                            <th>Produtos</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="fornecedores-lista"></tbody>
+                </table>
+                <button id="voltarCadastro">Voltar</button>
+            </section>
+        </main>
+        <footer class="hud-footer">
+            <p>&copy; 2024 Cadastro</p>
+        </footer>
     </div>
-
-    <div class="conteiner" id="visualizacao-container" style="display: none;">
-        
-        <table class="tabela-fornecedores">
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Email</th>
-                    <th>Telefone</th>
-                    <th>Tipo de Produto</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody id="fornecedores-lista"></tbody>
-        </table>
-        <button class="botao-voltar" id="voltarCadastro">Voltar ao Cadastro</button>
-    </div>
-
     <script src="script.js"></script>
 </body>
 </html>

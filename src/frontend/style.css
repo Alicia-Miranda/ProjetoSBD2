@@ -1,155 +1,278 @@
-/* Reset básico */
+/* Reset Básico */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    font-family: 'Orbitron', sans-serif; /* Estilo futurista */
 }
 
-/* Corpo e fundo */
-body, html {
-    height: 100%;
+/* Corpo e Fundo */
+body {
+    background: radial-gradient(circle at 50% 50%, #0f2027, #203a43, #2c5364);
+    color: #e4f9ff;
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Fundo de HUD */
+.hud-background {
+    position: relative;
+    width: 90%;
+    max-width: 1200px;
+    padding: 20px;
+    border: 2px solid #19cbe2;
+    border-radius: 15px;
+    background: rgba(0, 0, 0, 0.7);
+    box-shadow: 0px 0px 20px rgba(0, 217, 255, 0.5), 0px 0px 60px rgba(0, 217, 255, 0.2) inset;
+}
+
+/* Header */
+.hud-header h1 {
+    text-align: center;
+    color: #19cbe2;
+    font-size: 2rem;
+    text-shadow: 0px 0px 10px #19cbe2;
+    margin-bottom: 20px;
+}
+
+/* Main Panels */
+.hud-main {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: url('imagemFundo.jpg') no-repeat center center fixed;
-    background-size: cover;
-    color: #fbfafe;
+    gap: 20px;
 }
 
-/* Efeito de fundo */
-body::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5); /* Escurece a imagem de fundo */
-    z-index: 1;
-}
-
-/* Título */
-h1 {
+/* Painel Principal */
+.hud-panel {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
     position: relative;
-    z-index: 2;
-    color: #ecf0f1;
-    font-size: 2rem;
-    margin-bottom: 25px;
-    text-align: center;
-    font-weight: 600;
-    text-transform: uppercase;
+    animation: glow 3s infinite alternate;
 }
 
-/* Container principal */
-.conteiner {
-    position: relative;
-    z-index: 2;
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 30px 20px;
-    border-radius: 20px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    max-width: 1000px;
-    width: 100%;
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 10px rgba(0, 217, 255, 0.4);
+    }
+    100% {
+        box-shadow: 0 0 30px rgba(0, 217, 255, 0.8);
+    }
 }
 
 /* Formulário */
-.form {
+form {
+    display: grid;
+    grid-template-columns: 1fr 2fr; 
+    gap: 15px; 
+    align-items: center; 
+}
+.form-buttons {
+    grid-column: 1 / -1; 
     display: flex;
-    flex-direction: column;
-    
+    justify-content: center;
+    gap: 20px; 
 }
-
-/* Estilo dos labels */
-.form label {
-    margin-top: 10px;
-    color: #000000;
+label {
+    text-align: right; 
+    padding-right: 10px;
+    color: #19cbe2;
     font-size: 1rem;
 }
 
-/* Estilo dos inputs */
-.form input[type="text"],
-.form input[type="email"],
-.form input[type="number"] {
-    margin-top: 5px;
-    padding: 15px;  
-    font-size: 1rem;
-    border: 1px solid #5e5555;
-    border-radius: 5px;
-    outline: none;
-    transition: border-color 0.3s;
-    
-}
-
-/* Foco nos inputs */
-.form input[type="text"]:focus,
-.form input[type="email"]:focus,
-.form input[type="number"]:focus {
-    border-color: #000000;
-    background-color: #eaf7f7;
-}
-
-/* Estilo do botão */
-.form button {
-    margin-top: 20px;
+input {
+    width: 100%; /* Os campos ocupam toda a coluna reservada */
     padding: 10px;
-    font-size: 1rem;
-    color: #fff;
-    background-color: #19cbe2;
     border: none;
     border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+    background: rgba(0, 217, 255, 0.1);
+    color: #e4f9ff;
+    outline: none;
+    transition: box-shadow 0.3s ease;
 }
 
-.form button:hover {
-    background-color: #022040;
+input:focus {
+    box-shadow: 0 0 10px #19cbe2;
 }
-/* Estilo geral atualizado */
-.tabela-fornecedores {
+
+/* Botões */
+button {
+    padding: 10px 20px;
+    border: none;
+    background: linear-gradient(135deg, #19cbe2, #0a667d);
+    color: white;
+    font-size: 1rem;
+    border-radius: 5px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+
+button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px #19cbe2;
+}
+
+/* Tabela */
+table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    color: #e4f9ff;
+    margin-top: 15px;
 }
 
-.tabela-fornecedores th, .tabela-fornecedores td {
-    padding: 20px;
+table th, table td {
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+table th {
+    background: rgba(0, 217, 255, 0.2);
     text-align: left;
-    border: 1px solid #ddd;
-    color: #333;
+    color: #19cbe2;
 }
 
-.tabela-fornecedores th {
-    background-color: #19cbe2;
-    color: #ffffff;
+table tr:hover {
+    background: rgba(0, 217, 255, 0.1);
 }
 
-.tabela-fornecedores tr:nth-child(even) {
-    background-color: #f4f4f4;
+/* Footer */
+.hud-footer p {
+    text-align: center;
+    color: #19cbe2;
+    font-size: 0.9rem;
+    margin-top: 20px;
 }
 
-.tabela-fornecedores tr:hover {
-    background-color: #e9e9e9;
+/* Estilos para o modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease-out;
 }
 
-/* Botão Voltar */
-.botao-voltar {
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .modal-content {
+        width: 90%;
+    }
+}
+.modal-content {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 20px;
+    width: 80%;
+    max-width: 400px;
+    color: #e4f9ff;
+    box-shadow: 0px 0px 20px rgba(0, 217, 255, 0.5), 0px 0px 60px rgba(0, 217, 255, 0.2) inset;
+    animation: glow 3s infinite alternate;
+}
+
+.modal-content h3 {
+    margin-bottom: 15px;
+    text-align: center;
+    color: #19cbe2;
+    text-shadow: 0px 0px 10px #19cbe2;
+}
+
+.modal-content form label {
     display: block;
-    margin: 20px auto;
-    padding: 10px 20px;
-    font-size: 1rem;
-    background-color: #19cbe2;
-    color: #fff;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+    color: #19cbe2;
+}
+
+.modal-content form input {
+    width: 100%;
+    padding: 10px;
     border: none;
     border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+    background: rgba(0, 217, 255, 0.1);
+    color: #e4f9ff;
+    margin-bottom: 10px;
+    outline: none;
 }
 
-.botao-voltar:hover {
-    background-color: #022040;
+.modal-content form input:focus {
+    box-shadow: 0 0 10px #19cbe2;
+}
+
+.modal-content button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    background: linear-gradient(135deg, #19cbe2, #0a667d);
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.modal-content button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px #19cbe2;
+}
+
+/* Botão para fechar o modal */
+.modal-content #fecharModal {
+    background: red;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.modal-content #fecharModal:hover {
+    background: darkred;
+}
+
+/* Reestilizando a lista de produtos */
+.produtos-lista {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.produtos-lista li {
+    background: rgba(0, 217, 255, 0.2);
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #19cbe2;
+    color: #e4f9ff;
+    display: flex;
+    justify-content: space-between;
+    width: 45%;
+}
+
+.produtos-lista li button {
+    background-color: red;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.produtos-lista li button:hover {
+    background-color: darkred;
 }
