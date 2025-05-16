@@ -1,1 +1,1 @@
-Desenvolvimento de um sistema de cadastro de produtos
+Desenvolvimento de um sistema de cadastro de produtos. Este projeto consiste em uma aplicação web que permite o cadastro, visualização, edição e exclusão de produtos. O objetivo é aplicar conceitos de desenvolvimento full-stack, integrando front-end e back-end, com persistência de dados em banco de dados relacional.
